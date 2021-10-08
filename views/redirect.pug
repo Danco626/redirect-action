@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  .w3-card-4
+    h1 #{title}
+      br
+      script.
+          
+          const resendEmail = () => {
+            fetch('/redirect/email', {method: 'POST', headers: {'content_type': 'application/json'}})
+            .then( console.log('success'));
+          }           
+      
+      input(type="button", value="Resend Email", onclick="(resendEmail())")
+      a(id="continue" href="/redirect/continue").w3-bar-item.w3-button Continue
+      
