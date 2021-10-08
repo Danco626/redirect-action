@@ -3,12 +3,10 @@ const express = require('express');
 const router = express.Router();
 
 
-
 router.get('/firstredirect', async (req, res, next) => {    
-  req.session.redirectState = req.query.state;
-  
+  req.session.redirectState = req.query.state;  
   req.session.userid = decodeURIComponent(req.query.userid);  
-  console.log(req.session.userid);
+  
   res.render('redirect', { title: 'Redirect one' });
 });
 
@@ -27,7 +25,7 @@ router.get('/continue', async (req, res, next) => {
 });
 
 
-const getToken = async (userid) => {
+const getTokenAndSendEmail = async (userid) => {
   const baseUrl = `https://${process.env.AUTH0_DOMAIN}`;
   const tokenRequest = {
     grant_type: 'client_credentials',
@@ -48,8 +46,7 @@ const getToken = async (userid) => {
   }
 
   result = await axios.post(`${baseUrl}/api/v2/jobs/verification-email`, emailRequest, {headers: headers});
-  console.log(result);
-  return result.data;
+  console.log(result);  
 }
 
 
@@ -57,7 +54,7 @@ const getToken = async (userid) => {
 router.post('/email', async (req, res, next) => {
   try {    
   const userid = req.session.userid;
-  const emailRes = await getToken(userid);
+  await getTokenAndSendEmail(userid);
   } catch (err) {
     console.log(err);
   }
