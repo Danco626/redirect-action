@@ -1,4 +1,15 @@
-
+## Configuring the Application
+1. Create a sample application in Auth0 to represent the sample application
+2. Add http://localhost:3000/callback to the Allowed Callback URLs
+3. Add http://localhost:3000 to the Allowed Logout URLs
+4. Enable both authrorization code and client credentials grant types under applications > advanced settings > grant types
+5. Navigate to APIs > Auth0 Management API > Machine to Machine Applications
+6. Find the application created in step 1 and authorize it to use the management API and enable the *update:users* scope
+7. Add the applications client id, secret, and domain to the .env file in the sample application
+8. Create 3 post-login actions and deploy them in the following order. Actions can be found in the actions directory
+    - **Redirect1** - handles a redirect to /redirect/firstredirect and adds a custom claim with the verified email status
+    - **Redirect2** - handles a redirect to /redirect/secondredirect
+    - **Redirect3** - handles a redirect to /redirect/thirdredirect
 
 ## Running the Application
 
@@ -25,38 +36,11 @@ npm start
 
 The app will be served at `localhost:3000`.
 
-## Running the Sample With Docker
+## Using the Application
+1. After configuring the application in Auth0, login to the sample app
+2. This application has 3 redirect endpoints that will run in order
+3. The redirect routes display both a **Resend Email** button and **Continue** link that redirects back into the authentication flow.
 
-In order to run the example with docker you need to have `docker` installed.
-
-You also need to set the environment variables as explained [previously](#running-the-sample).
-
-Execute in command line `sh exec.sh` to run the Docker in Linux, or `.\exec.ps1` to run the Docker in Windows.
-
-## What is Auth0?
-
-Auth0 helps you to:
-
-* Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, Salesforce, among others**, or enterprise identity systems like **Windows Azure AD, Google Apps, Active Directory, ADFS or any SAML Identity Provider**.
-* Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
-* Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-* Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
-* Analytics of how, when and where users are logging in.
-* Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
-
-## Create a free account in Auth0
-
-1. Go to [Auth0](https://auth0.com) and click Sign Up.
-2. Use Google, GitHub or Microsoft Account to login.
-
-## Issue Reporting
-
-If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
-
-## Author
-
-[Auth0](https://auth0.com)
-
-## License
-
-This project is licensed under the MIT license. See the [LICENSE](LICENSE) file for more info.
+## Primary Code
+1. ./routes/auth.js has the authentication logic
+2. ./routes/redirect.js has the redirect action and resent email logic 
